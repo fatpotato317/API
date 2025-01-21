@@ -52,3 +52,15 @@ def add_picture():
 
 if __name__ == '__main__':
     app.run()
+
+# Vercel entry point
+from flask import Flask
+import os
+
+app = Flask(__name__)
+
+# Define your Flask routes here
+
+# Export the Vercel handler
+def handler(event, context):
+    return app(event, context)
