@@ -1,12 +1,10 @@
 from flask import Flask, request, jsonify, render_template
 from supabase import create_client, Client
-import os
 import random
 from decouple import config
 
 app = Flask(__name__)
 
-# Supabase connection
 SUPABASE_URL = config("URL")
 SUPABASE_KEY = config("KEY")
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
@@ -14,13 +12,13 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 # Home route to render the documentation
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html')  
 
-# Get requests
+# THESE ARE MY Get requests
 @app.route('/<animal>', methods=['GET'])
 def get_random_picture(animal):
     if animal not in ['dog', 'cat', 'capybara']:
-        return jsonify({"error": "Hey there! looks like you give me an invalid animal type. Please use 'dog', 'cat', or 'capybara'! (More info at https://github.com/fatpotato317/API)"}), 400
+        return jsonify({"error": "Invalid animal type. Please use 'dog', 'cat', or 'capybara'!"}), 400
 
     try:
         response = supabase.table(animal).select("*").execute()
@@ -33,7 +31,7 @@ def get_random_picture(animal):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Post requests
+# THESE ARE MY Post requests
 @app.route('/add_picture', methods=['POST'])
 def add_picture():
     data = request.json
@@ -41,26 +39,16 @@ def add_picture():
     url = data.get('url')
 
     if animal not in ['dog', 'cat', 'capybara']:
-        return jsonify({"error": "Hey there! looks like you gave me an invalid animal type! Use 'dog', 'cat', or 'capybara'!(More info at https://github.com/fatpotato317/API)"}), 400
+        return jsonify({"error": "Invalid animal type! Use 'dog', 'cat', or 'capybara'."}), 400
     if not url:
-        return jsonify({"error": "Picture URL is is missing! (More info at https://github.com/fatpotato317/API)"}), 400
+        return jsonify({"error": "Picture URL is missing!"}), 400
     try:
         supabase.table(animal).insert({"url": url}).execute()
-        return jsonify({"status": "Thanks for that amazing picture! (More info at https://github.com/fatpotato317/API)"})
+        return jsonify({"status": "Thanks for the picture!"})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run()
+    app.run()  
 
-# Vercel entry point
-from flask import Flask
-import os
 
-app = Flask(__name__)
-
-# Define your Flask routes here
-
-# Export the Vercel handler
-def handler(event, context):
-    return app(event, context)
