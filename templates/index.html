@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Picture API Documentation</title>
+    <style>
+        body {
+            background-color: #1a1a2e;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #ff4500;
+            text-align: center;
+        }
+        h2, h3 {
+            color: #ffa500;
+        }
+        .code-block {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .code-block code {
+            color: #00ff00;
+        }
+        .example {
+            background-color: #222;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Animal Picture API Documentation</h1>
+        
+        <h2>Overview</h2>
+        <p>Welcome to the Animal Picture API! This API allows you to retrieve and add pictures of animals such as dogs, cats, and capybaras. You can get a random picture of the specified animal or add new pictures to the database.</p>
+        
+        <h2>Endpoints</h2>
+        
+        <h3>1. Get Random Picture</h3>
+        <p><strong>URL:</strong> <code>/&lt;animal&gt;</code></p>
+        <p><strong>Method:</strong> <code>GET</code></p>
+        <p><strong>Description:</strong> Retrieves a random picture of the specified animal.</p>
+        <p><strong>Path Parameters:</strong></p>
+        <ul>
+            <li><code>animal</code> (string): The type of animal. Must be one of <code>dog</code>, <code>cat</code>, or <code>capybara</code>.</li>
+        </ul>
+        <p><strong>Responses:</strong></p>
+        <ul>
+            <li><code>200 OK:</code> Returns a JSON object with the URL of the random picture.</li>
+            <li><code>400 Bad Request:</code> Returns an error if the animal type is invalid.</li>
+            <li><code>404 Not Found:</code> Returns an error if no pictures are available for the specified animal.</li>
+            <li><code>500 Internal Server Error:</code> Returns an error if there is a server-side issue.</li>
+        </ul>
+        
+        <div class="code-block">
+            <pre><code>curl -X GET "http://localhost:5000/dog"</code></pre>
+        </div>
+        
+        <div class="example">
+            <pre><code>{
+    "url": "https://example.com/dog_picture.jpg"
+}</code></pre>
+        </div>
+        
+        <h3>2. Add Picture</h3>
+        <p><strong>URL:</strong> <code>/add_picture</code></p>
+        <p><strong>Method:</strong> <code>POST</code></p>
+        <p><strong>Description:</strong> Adds a new picture URL to the specified animal's database.</p>
+        <p><strong>Request Body:</strong></p>
+        <ul>
+            <li><code>animal</code> (string): The type of animal. Must be one of <code>dog</code>, <code>cat</code>, or <code>capybara</code>.</li>
+            <li><code>url</code> (string): The URL of the picture to be added.</li>
+        </ul>
+        <p><strong>Responses:</strong></p>
+        <ul>
+            <li><code>200 OK:</code> Returns a success message if the picture is added successfully.</li>
+            <li><code>400 Bad Request:</code> Returns an error if the animal type is invalid or if the picture URL is missing.</li>
+            <li><code>500 Internal Server Error:</code> Returns an error if there is a server-side issue.</li>
+        </ul>
+        
+        <div class="code-block">
+            <pre><code>curl -X POST "http://localhost:5000/add_picture" -H "Content-Type: application/json" -d '{"animal": "dog", "url": "https://example.com/dog_picture.jpg"}'</code></pre>
+        </div>
+        
+        <div class="example">
+            <pre><code>{
+    "status": "Thanks for that amazing picture! (More info at https://github.com/fatpotato317/API)"
+}</code></pre>
+        </div>
+        
+        <h2>Setup Instructions</h2>
+        
+        <h3>Prerequisites</h3>
+        <ul>
+            <li>Python 3.6 or higher</li>
+            <li>Flask</li>
+            <li>Supabase</li>
+            <li>Decouple</li>
+        </ul>
+        
+        <h3>Installation</h3>
+        <p>1. Clone the repository:</p>
+        <div class="code-block">
+            <pre><code>git clone https://github.com/fatpotato317/API.git
+cd API</code></pre>
+        </div>
+        
+        <p>2. Install the required dependencies:</p>
+        <div class="code-block">
+            <pre><code>pip install flask supabase-python python-decouple</code></pre>
+        </div>
+        
+        <p>3. Configure environment variables:</p>
+        <p>Create a <code>.env</code> file in the root directory and add the following lines:</p>
+        <div class="code-block">
+            <pre><code>URL=your_supabase_url
+KEY=your_supabase_key</code></pre>
+        </div>
+        
+        <h3>Running the API</h3>
+        <p>To run the API, use the following command:</p>
+        <div class="code-block">
+            <pre><code>python app.py</code></pre>
+        </div>
+        
+        <h3>Platform-Specific Instructions</h3>
+        
+        <h4>Linux</h4>
+        <div class="code-block">
+            <pre><code># Install dependencies
+sudo apt-get update
+sudo apt-get install python3 python3-pip
+pip3 install flask supabase-python python-decouple
+
+# Run the API
+python3 app.py</code></pre>
+        </div>
+        
+        <h4>macOS</h4>
+        <div class="code-block">
+            <pre><code># Install dependencies
+brew update
+brew install python3
+pip3 install flask supabase-python python-decouple
+
+# Run the API
+python3 app.py</code></pre>
+        </div>
+        
+        <h4>Windows</h4>
+        <div class="code-block">
+            <pre><code># Install dependencies
+choco install python3
+pip install flask supabase-python python-decouple
+
+# Run the API
+python app.py</code></pre>
+        </div>
+        
+        <h2>Error Handling</h2>
+        <p>The API returns appropriate error messages for invalid requests and server-side issues. Ensure to check the response codes and messages for debugging.</p>
+        
+        <h2>Contributing</h2>
+        <p>Feel free to contribute to this project by submitting issues or pull requests on the <a href="https://github.com/fatpotato317/API" style="color: #ffa500;">GitHub repository</a>.</p>
+        
+        <h2>License</h2>
+        <p>This project is licensed under the MIT License.</p>
+        
+        <p>For more information, visit the <a href="https://github.com/fatpotato317/API" style="color: #ffa500;">GitHub repository</a>.</p>
+    </div>
+</body>
+</html>
